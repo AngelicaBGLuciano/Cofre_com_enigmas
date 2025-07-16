@@ -12,7 +12,7 @@ Este projeto é um cofre interativo desenvolvido como trabalho para a disciplina
 
 ## 🎬 Demonstração
 
-Veja o cofre em ação! O GIF abaixo demonstra a sequência de enigmas, o feedback no display OLED e a abertura final com o servo motor.
+Veja o cofre em ação! O video abaixo demonstra a sequência de enigmas, o feedback no display OLED e a abertura final com o servo motor.
 
 [![Assista ao vídeo](https://img.youtube.com/vi/PA0O_WiGqmI/0.jpg)](https://youtu.be/PA0O_WiGqmI)
 
@@ -68,7 +68,7 @@ Veja o cofre em ação! O GIF abaixo demonstra a sequência de enigmas, o feedba
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/seu-usuario/seu-repositorio.git](https://github.com/seu-usuario/seu-repositorio.git)
+    git clone [https://github.com/AngelicaBGLuciano/Cofre_com_enigmas.git](https://github.com/AngelicaBGLuciano/Cofre_com_enigmas.git))
     ```
 2.  **Abra na IDE do Arduino:** Abra o arquivo `.ino` na sua Arduino IDE.
 3.  **Instale as bibliotecas:** Vá em `Ferramentas > Gerenciar Bibliotecas...` e instale as cinco bibliotecas listadas na seção de software.
