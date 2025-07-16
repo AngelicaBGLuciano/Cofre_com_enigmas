@@ -68,7 +68,7 @@ Veja o cofre em ação! O video abaixo demonstra a sequência de enigmas, o feed
 
 1.  **Clone o repositório:**
     ```bash
-    git clone [https://github.com/AngelicaBGLuciano/Cofre_com_enigmas.git](https://github.com/AngelicaBGLuciano/Cofre_com_enigmas.git))
+    git clone https://github.com/AngelicaBGLuciano/Cofre_com_enigmas.git
     ```
 2.  **Abra na IDE do Arduino:** Abra o arquivo `.ino` na sua Arduino IDE.
 3.  **Instale as bibliotecas:** Vá em `Ferramentas > Gerenciar Bibliotecas...` e instale as cinco bibliotecas listadas na seção de software.
