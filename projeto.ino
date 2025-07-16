@@ -8,7 +8,7 @@
 #include <Keypad.h>           // Inclui a biblioteca Keypad para o teclado matricial
 
 // --- Definições de Pinos e Constantes ---
-// Pinos para os componentes (verifique as suas conexões físicas)
+// Pinos para os componentes 
 const int LED_PIN = 13;             // Pino do LED embutido (para teste visual geral do sistema ativo)
 const int VIBRATION_SENSOR_PIN = 2; // Pino digital para o sensor de vibração (SW-420)
 const int BUZZER_PIN = 8;           // Pino digital para o buzzer passivo
@@ -16,7 +16,7 @@ const int SERVO_PIN = 9;            // Pino digital para o servo motor
 const int POTENTIOMETER_PIN = A0;   // Pino analógico para o potenciômetro
 const int LDR_PIN = A1;             // Pino analógico para o LDR (Resistor Dependente de Luz)
 
-// Pinos para LEDs específicos de cada enigma (AGORA APENAS 4 ENIGMAS)
+// Pinos para LEDs específicos de cada enigma
 const int LED_ENIGMA_1_PIN = 30; // LED para Enigma 1 (Vibração)
 const int LED_ENIGMA_2_PIN = 31; // LED para Enigma 2 (LDR)
 const int LED_ENIGMA_3_PIN = 32; // LED para Enigma 3 (Teclado)
@@ -27,15 +27,15 @@ const int LED_ENIGMA_4_PIN = 33; // LED para Enigma 4 (Potenciômetro)
 #define SCREEN_HEIGHT 64    // Altura do display OLED, em pixels
 #define OLED_RESET -1       // Pino de reset do OLED (ou -1 se não usado, comum para módulos I2C)
 
-// Objeto de display SSD1306 (global para ser acessível pelas tarefas)
+// Objeto de display SSD1306 
 Adafruit_SSD1306 display(SCREEN_WIDTH, SCREEN_HEIGHT, &Wire, OLED_RESET);
 
-// Objeto Servo (global para ser acessível pelas tarefas)
+// Objeto Servo 
 Servo meuServo;
 
 // --- Configuração do Teclado Matricial 4x3 ---
-const byte ROWS = 4; // Quatro linhas
-const byte COLS = 3; // Três colunas (para teclado 4x3)
+const byte ROWS = 4; 
+const byte COLS = 3; 
 
 // Define o mapeamento das teclas do teclado 4x3
 char keys[ROWS][COLS] = {
@@ -46,9 +46,9 @@ char keys[ROWS][COLS] = {
 };
 
 // Pinos do Arduino conectados às linhas do teclado (R1, R2, R3, R4)
-byte rowPins[ROWS] = {22, 23, 24, 25}; // Use pinos digitais do Mega
+byte rowPins[ROWS] = {22, 23, 24, 25}; 
 // Pinos do Arduino conectados às colunas do teclado (C1, C2, C3)
-byte colPins[COLS] = {26, 27, 28};     // Use pinos digitais do Mega (apenas 3 pinos para colunas)
+byte colPins[COLS] = {26, 27, 28};     
 
 // Cria o objeto Keypad
 Keypad customKeypad = Keypad(makeKeymap(keys), rowPins, colPins, ROWS, COLS);
@@ -87,7 +87,7 @@ typedef struct {
     enum { CMD_DISPLAY_CLEAR, CMD_DISPLAY_TEXT, CMD_DRAW_PROGRESS_BAR, CMD_DISPLAY_OFF, CMD_DISPLAY_KEYPAD_INPUT,
             CMD_DISPLAY_POTENTIOMETER_GAUGE, CMD_DISPLAY_LDR_ENIGMA } type;
     union {
-        struct { char text[64]; } textCmd; // Texto a ser exibido (aumentado para caber mais)
+        struct { char text[64]; } textCmd; // Texto a ser exibido 
         struct { char input[7]; int currentLength; } keypadInputCmd; // Para exibir entrada do teclado
         struct { int currentValue; int targetMin; int targetMax; } potentiometerGaugeCmd; // Para o enigma do potenciometro
         struct { int ldrCurrentValue; } ldrEnigmaCmd; // Para o enigma do LDR
@@ -111,7 +111,7 @@ TimerHandle_t xEnigmaTimeoutTimer; // NOVO: Timer para o timeout de cada enigma
 
 // Prototipo da funcao de callback do timer do potenciometro
 void vPotentiometerTimerCallback(TimerHandle_t pxTimer);
-// NOVO: Prototipo da funcao de callback do timer de timeout do enigma
+// Prototipo da funcao de callback do timer de timeout do enigma
 void vEnigmaTimeoutCallback(TimerHandle_t pxTimer);
 
 // --- Declaração das Tarefas (Protótipos de Função) ---
@@ -120,7 +120,7 @@ void Task_Palantir(void *pvParameters);           // Monitora os periféricos de
 void Task_EspelhoDeGaladriel(void *pvParameters); // Controla o display OLED
 void Task_VozDeSaruman(void *pvParameters);       // Controla os atuadores (Servo e Buzzer)
 
-// --- Configuração (setup) ---
+// --- Configuração ---
 void setup() {
   Serial.begin(9600); // Inicia a comunicação serial para depuração
   pinMode(LED_PIN, OUTPUT); // Define o pino do LED geral como saída
@@ -165,7 +165,7 @@ void setup() {
     while (1);
   }
 
-  // NOVO: Cria o timer por software para o timeout do enigma (30 segundos)
+  // Cria o timer por software para o timeout do enigma (30 segundos)
   xEnigmaTimeoutTimer = xTimerCreate("EnigmaTimeout", pdMS_TO_TICKS(30000), pdFALSE, (void *)0, vEnigmaTimeoutCallback);
   if (xEnigmaTimeoutTimer == NULL) {
     Serial.println("Erro ao criar xEnigmaTimeoutTimer");
@@ -187,7 +187,7 @@ void setup() {
   while (1);
 }
 
-// --- Loop Principal (loop) ---
+// --- Loop Principal ---
 void loop() {
   // FreeRTOS está controlando tudo.
 }
@@ -199,7 +199,7 @@ void vPotentiometerTimerCallback(TimerHandle_t pxTimer) {
 
   // Envia um evento de sucesso para a Task_ConselhoDeElrond
   EventData_t event;
-  event.type = EventData_t::EVENT_POTENTIOMETER_READING; // Reutilizamos o tipo de evento, mas com um valor especial
+  event.type = EventData_t::EVENT_POTENTIOMETER_READING; 
   event.data.potentiometerValue = -1; // Valor especial para indicar "timer expirou"
   if (xQueueSend(xEventQueue, &event, 0) != pdPASS) { // Nao bloqueia se a fila estiver cheia
     Serial.println("Timer Callback: Erro ao enviar evento de sucesso do potenciometro.");
@@ -208,7 +208,7 @@ void vPotentiometerTimerCallback(TimerHandle_t pxTimer) {
   }
 }
 
-// NOVO: Funcao de Callback do Timer de Timeout do Enigma
+//  Funcao de Callback do Timer de Timeout do Enigma
 void vEnigmaTimeoutCallback(TimerHandle_t pxTimer) {
   (void) pxTimer; // Para evitar warnings de parametro nao utilizado
   // Esta funcao e chamada quando o timer de timeout de um enigma expira.
@@ -232,10 +232,10 @@ void Task_ConselhoDeElrond(void *pvParameters) {
   ActuatorCommand_t actuatorCommand;
 
   // Variáveis para o Enigma 2 (LDR)
-  const int LDR_THRESHOLD = 700; // Limiar de luz para o LDR (ajuste conforme o seu LDR e ambiente)
+  const int LDR_THRESHOLD = 700; // Limiar de luz para o LDR 
 
   // Variáveis para o Enigma 3 (Teclado)
-  static char keypadInputBuffer[7]; // Buffer para armazenar a entrada do teclado (6 dígitos + null terminator)
+  static char keypadInputBuffer[7]; // Buffer para armazenar a entrada do teclado 
   static int keypadInputIndex = 0;  // Índice da próxima posição livre no buffer
   const char* MELLON_PASSWORD = "635566"; // Senha correta para "Mellon" no T9
 
@@ -265,19 +265,13 @@ void Task_ConselhoDeElrond(void *pvParameters) {
         case STATE_DORMANT:
           if (receivedEvent.type == EventData_t::EVENT_VIBRATION_DETECTED) {
             Serial.println("Vibracao detectada no estado DORMANT. Avancando para Enigma 1 (Vibracao).");
-            currentSystemState = STATE_ENIGMA_1_VIBRATION; // AGORA AVANÇA PARA O ENIGMA 1
+            currentSystemState = STATE_ENIGMA_1_VIBRATION; // Avanca para o enigma 1
             digitalWrite(LED_PIN, HIGH); // Acende o LED geral do sistema
 
             // Envia comandos para o display (Mensagem do Enigma 1)
             displayCommand.type = DisplayCommand_t::CMD_DISPLAY_CLEAR;
             xQueueSend(xDisplayCommandQueue, &displayCommand, portMAX_DELAY);
-            /*
-            displayCommand.type = DisplayCommand_t::CMD_DISPLAY_TEXT;
-            strcpy(displayCommand.data.textCmd.text, "Enigma 1: Vibracao");
-            xQueueSend(xDisplayCommandQueue, &displayCommand, portMAX_DELAY);
-            */
-
-            
+                  
             // Inicia o timer de timeout para o Enigma 1
             xTimerStart(xEnigmaTimeoutTimer, 0);
 
@@ -286,7 +280,7 @@ void Task_ConselhoDeElrond(void *pvParameters) {
           }
           break;
 
-        case STATE_ENIGMA_1_VIBRATION: // NOVO: Enigma 1 (Vibração)
+        case STATE_ENIGMA_1_VIBRATION: // Enigma 1 (Vibração)
           Serial.println("No Enigma 1 (Vibracao).");
           if (receivedEvent.type == EventData_t::EVENT_VIBRATION_DETECTED) {
             Serial.println("Vibracao detectada no Enigma 1. Avancando para Enigma 2 (LDR).");
@@ -329,10 +323,7 @@ void Task_ConselhoDeElrond(void *pvParameters) {
         case STATE_ENIGMA_2_LDR: // Enigma 2 (LDR)
             if (receivedEvent.type == EventData_t::EVENT_LDR_READING) {
                 int ldrValue = receivedEvent.data.ldrValue;
-
-                // REMOVIDO: xTimerReset(xEnigmaTimeoutTimer, 0);
-                // O timer de timeout para o LDR agora só será parado/reiniciado ao resolver o enigma.
-
+              
                 // Envia o valor atual do LDR para o display
                 displayCommand.type = DisplayCommand_t::CMD_DISPLAY_LDR_ENIGMA;
                 displayCommand.data.ldrEnigmaCmd.ldrCurrentValue = ldrValue;
@@ -391,7 +382,7 @@ void Task_ConselhoDeElrond(void *pvParameters) {
               Serial.print("Teclado digitado: ");
               Serial.println(key);
 
-              // Reinicia o timer de timeout a cada tecla pressionada (para dar mais tempo)
+              // Reinicia o timer de timeout a cada tecla pressionada 
               xTimerReset(xEnigmaTimeoutTimer, 0);
 
               if (key == '#') { // Tecla '#' pressionada, tentar validar a senha
@@ -678,7 +669,7 @@ void Task_EspelhoDeGaladriel(void *pvParameters) {
           display.ssd1306_command(SSD1306_DISPLAYON); // LIGA o display fisicamente
           display.setTextSize(1);
           display.setTextColor(SSD1306_WHITE);
-          display.setCursor(0, 0); // Posição para a mensagem principal (Fale 'Amigo')
+          display.setCursor(0, 0); // Posição para a mensagem principal 
           display.println("As Portas de Durin,"); // Mensagem do teclado
           display.setCursor(0, 10);
           display.println("Senhor de Moria.");
