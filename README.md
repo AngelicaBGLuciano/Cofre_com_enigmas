@@ -14,7 +14,8 @@ Este projeto é um cofre interativo desenvolvido como trabalho para a disciplina
 
 Veja o cofre em ação! O GIF abaixo demonstra a sequência de enigmas, o feedback no display OLED e a abertura final com o servo motor.
 
-![Demo do projeto](https://drive.google.com/file/d/13VjAMwlGti3mm-U31Ctjicc1TJSl3S9S/view?usp=sharing)
+[![Assista ao vídeo](https://img.youtube.com/vi/PA0O_WiGqmI/0.jpg)](https://youtu.be/PA0O_WiGqmI)
+
 
 
 ---
