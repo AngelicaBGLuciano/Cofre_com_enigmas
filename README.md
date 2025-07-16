@@ -6,7 +6,7 @@
 
 ## 📖 Sobre o Projeto
 
-Este projeto é um cofre interativo desenvolvido como trabalho para a disciplina de Sistemas de Tempo Real. O sistema, controlado por um Arduino Mega, utiliza o sistema operacional de tempo real **FreeRTOS** para gerenciar múltiplas tarefas concorrentes. O objetivo é resolver uma sequência de quatro enigmas temáticos para acionar a abertura do cofre, demonstrando conceitos de escalonamento, comunicação entre tarefas (filas) e gerenciamento de estado.
+Este projeto é um cofre interativo desenvolvido como trabalho para a disciplina de Sistemas Embarcados. O sistema, controlado por um Arduino Mega, utiliza o sistema operacional de tempo real **FreeRTOS** para gerenciar múltiplas tarefas concorrentes. O objetivo é resolver uma sequência de quatro enigmas temáticos para acionar a abertura do cofre, demonstrando conceitos de escalonamento, comunicação entre tarefas (filas) e gerenciamento de estado.
 
 ---
 
